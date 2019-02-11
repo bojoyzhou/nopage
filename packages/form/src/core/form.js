@@ -7,7 +7,7 @@ import scroll from '../util/scroll';
 import { isPromise, isObject, isInvalidVal, isSingleItemSet } from '../util/is';
 
 const genName = () => `__anonymouse__${genId()}`;
-const noop = () => {};
+const noop = () => { };
 
 class Form {
     constructor(option = {}) {
@@ -114,19 +114,16 @@ class Form {
         if (withRender) {
             this.setError(errors4Setting);
         }
-        
+
         if (success) {
             return cb(null);
-        } else {
-            return cb(errors4User);
         }
+        return cb(errors4User);
     }
 
     // 纯净的校验方法, ui无关，不会涉及页面error 展示
     // 有别于validate方法是，不进行挂载，直接校验值
-    validateAll = (cb = x => x) => {
-        return this.validatePure(this.value, cb);
-    }
+    validateAll = (cb = x => x) => this.validatePure(this.value, cb)
 
     // 纯净的校验方法, ui无关，不会涉及页面error 展示
     // 有别于validate方法是，不进行挂载，直接校验值
@@ -166,7 +163,7 @@ class Form {
         return this.validateBase(cb, false);
     }
     // 表单校验,返回错误对象
-    validate(cb = x => x) {        
+    validate(cb = x => x) {
         return this.validateBase(cb, true);
     }
 
@@ -283,7 +280,7 @@ class Form {
             emptyValue = {
                 ...emptyValue,
                 ...this.initValues,
-            }
+            };
         }
 
         this.setValue(emptyValue);
@@ -488,9 +485,7 @@ class Form {
         if (isObject(config)) {
             this.validateConfig = config;
             this.children.forEach((child) => {
-                if (child.name in config) {
-                    child.setValidateConfig(config[child.name]);
-                }
+                child.setValidateConfig(config[child.name]);
             });
         }
     }

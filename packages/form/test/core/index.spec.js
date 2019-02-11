@@ -40,7 +40,7 @@ describe('core/form basic function', () => {
         const valuesCore = new FormCore({ initValues: values });
         valuesCore.setValues({
             x: 123,
-            y: 456
+            y: 456,
         });
         expect(valuesCore.getItemValue('x')).toEqual(123);
         expect(valuesCore.getItemValue('y')).toEqual(456);
@@ -576,6 +576,36 @@ describe('core/form basic function', () => {
         core.validate((errors) => {
             expect(errors).toEqual({ success: 'successHasError' });
             done();
+        });
+    });
+
+    it('fill empty validate field', (done) => {
+        core.addField([{
+            name: 'hasError',
+            value: 'hasError',
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = ['hasError'];
+                    callback(errors);
+                },
+            },
+        }, {
+            name: 'success',
+            value: 'success',
+            validateConfig: {
+                validator: (rule, value, callback) => {
+                    const errors = [];
+                    callback(errors);
+                },
+            },
+        }]);
+        core.validate((errors) => {
+            expect(errors).toEqual({ hasError: 'hasError' });
+            core.setValidateConfig({});
+            core.validate((errs) => {
+                expect(errs).toEqual(null);
+                done();
+            });
         });
     });
 
